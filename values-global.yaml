@@ -18,5 +18,6 @@ global:
     hostname: github.com
     account: mhjacks
     username: mhjacks
+    provider: github.com
     email: mhjacks@redhat.com
     dev_revision: main
