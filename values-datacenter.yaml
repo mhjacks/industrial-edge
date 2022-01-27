@@ -17,6 +17,7 @@ clusterGroup:
 
   operatorgroupExcludes:
   - manuela-ml-workspace
+  - manuela-tst-all
 
   subscriptions:
   - name: advanced-cluster-management
