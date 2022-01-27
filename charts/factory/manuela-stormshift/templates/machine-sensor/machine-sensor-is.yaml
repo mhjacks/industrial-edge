@@ -7,13 +7,6 @@ spec:
   lookupPolicy:
     local: true
   tags:
-  - name: 0.3.1-20
-    from:
-      kind: DockerImage
-      name: quay.io/ipbabble/iot-software-sensor:0.3.1-20
-    importPolicy: {}
-    referencePolicy:
-      type: Local
   - name: 0.3.1-21
     from:
       kind: DockerImage
@@ -39,6 +32,13 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-software-sensor:0.3.1-137
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.1-138
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-software-sensor:0.3.1-138
     importPolicy: {}
     referencePolicy:
       type: Local
