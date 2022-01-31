@@ -10,14 +10,14 @@ global:
     installPlanApproval: Automatic
 
   imageregistry:
-    account: martjack
+    account: PLAINTEXT
     hostname: quay.io
     provider: quay.io
 
   git:
     hostname: github.com
-    account: mhjacks
-    username: mhjacks
     provider: github.com
-    email: mhjacks@redhat.com
+    account: PLAINTEXT
+    username: PLAINTEXT
+    email: SOMEWHERE@EXAMPLE.COM
     dev_revision: main
