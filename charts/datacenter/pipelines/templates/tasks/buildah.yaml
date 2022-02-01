@@ -3,6 +3,7 @@ kind: Task
 metadata:
   name: buildah
 spec:
+  serviceAccountName: pipeline
   workspaces:
   - name: gitrepos
     description: The git repo will be cloned onto the volume backing this workspace
