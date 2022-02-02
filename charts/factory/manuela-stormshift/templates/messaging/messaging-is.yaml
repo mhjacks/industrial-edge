@@ -28,17 +28,17 @@ spec:
     importPolicy: {}
     referencePolicy:
       type: Local
-  - name: 0.3.2-18
-    from:
-      kind: DockerImage
-      name: quay.io/martjack/iot-consumer:0.3.2-18
-    importPolicy: {}
-    referencePolicy:
-      type: Local
   - name: 0.3.2-19
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-consumer:0.3.2-19
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.2-20
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-consumer:0.3.2-20
     importPolicy: {}
     referencePolicy:
       type: Local
