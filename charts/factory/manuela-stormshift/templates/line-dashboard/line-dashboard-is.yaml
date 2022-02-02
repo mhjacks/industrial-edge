@@ -7,13 +7,6 @@ spec:
   lookupPolicy:
     local: true
   tags:
-  - name: 0.3.1-158
-    from:
-      kind: DockerImage
-      name: quay.io/martjack/iot-frontend:0.3.1-158
-    importPolicy: {}
-    referencePolicy:
-      type: Local
   - name: 0.3.1-159
     from:
       kind: DockerImage
@@ -39,6 +32,13 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-frontend:0.3.1-162
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.1-163
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-frontend:0.3.1-163
     importPolicy: {}
     referencePolicy:
       type: Local
