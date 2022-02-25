@@ -7,3 +7,10 @@ spec:
   lookupPolicy:
     local: true
   tags:
+  - name: 0.3.1-160
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-software-sensor:0.3.1-160
+    importPolicy: {}
+    referencePolicy:
+      type: Local
