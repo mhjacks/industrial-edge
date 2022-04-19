@@ -23,8 +23,8 @@ global:
 
   s3:
     bucket:
-      name: S3BUCKETNAME
-      region: AWSREGION
+      name: mhjacks-s3-bucket
+      region: us-west-2
       message:
         aggregation:
           count: 100
