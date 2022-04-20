@@ -170,7 +170,6 @@ spec:
     - name: revision
       value: $(params.OPS_REVISION)
     - name: argocd-server
-      # datacenter-gitops-server.industrial-edge-datacenter.svc
       value: "{{ .Values.clusterGroup.name }}-gitops-server-{{ .Values.global.pattern }}-{{ .Values.clusterGroup.name }}.{{ .Values.global.hubClusterDomain}}"
 
   # - name: sensor-broker-test
