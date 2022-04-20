@@ -39,6 +39,17 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-consumer:0.3.2-10
+  - name: 0.3.2
+    from:
+      kind: DockerImage
+      name: quay.io/hybridcloudpatterns/iot-consumer:0.3.2
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.2-43
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-consumer:0.3.2-43
     importPolicy: {}
     referencePolicy:
       type: Local

@@ -7,6 +7,8 @@ clusterGroup:
     isHubCluster: True
 
   namespaces:
+  - golang-external-secrets
+  - external-secrets
   - open-cluster-management
   - manuela-ml-workspace
   - manuela-tst-all
@@ -14,6 +16,7 @@ clusterGroup:
   - manuela-data-lake-central-s3-store
   - manuela-data-lake-central-kafka-cluster
   - staging
+  - vault
 
   operatorgroupExcludes:
   - manuela-ml-workspace
@@ -21,8 +24,8 @@ clusterGroup:
   subscriptions:
   - name: advanced-cluster-management
     namespace: open-cluster-management
-    channel: release-2.3
-    csv: advanced-cluster-management.v2.3.2
+    channel: release-2.4
+    csv: advanced-cluster-management.v2.4.1
 
   - name: seldon-operator
     namespace: manuela-ml-workspace
@@ -36,36 +39,38 @@ clusterGroup:
   - name: openshift-pipelines-operator-rh
     csv: redhat-openshift-pipelines.v1.5.2
 
-  # TODO: Allow namespace to be a list
+ # TODO: Allow namespace to be a list
   - name: amq-streams
     namespace: manuela-data-lake-central-kafka-cluster
-    channel: amq-streams-1.7.x
-    csv: amqstreams.v1.7.1
+    channel: amq-streams-2.x
+    csv: amqstreams.v2.0.1-0
 
   - name: amq-streams
     namespace: manuela-tst-all
-    channel: amq-streams-1.7.x
-    csv: amqstreams.v1.7.1
+    channel: amq-streams-2.x
+    csv: amqstreams.v2.0.1-0
 
-  - name: amq-broker
+  - name: amq-broker-rhel8
     namespace: manuela-tst-all
     channel: 7.8.x
-    csv: amq-broker-operator.v7.8.1-opr-3
+    csv: amq-broker-operator.v7.8.4-opr-3
 
   - name: red-hat-camel-k
     namespace: manuela-data-lake-central-s3-store
-    channel: 1.4.x
-    csv: red-hat-camel-k-operator.v1.4.0
+    channel: 1.6.x
+    csv: red-hat-camel-k-operator.v1.6.3
 
   - name: red-hat-camel-k
     namespace: manuela-tst-all
-    channel: 1.4.x
-    csv: red-hat-camel-k-operator.v1.4.0
+    channel: 1.6.x
+    csv: red-hat-camel-k-operator.v1.6.3
 
   projects:
   - datacenter
   - datalake
- 
+  - golang-external-secrets
+  - vault
+
   applications:
   - name: acm
     namespace: open-cluster-management
@@ -113,7 +118,6 @@ clusterGroup:
     namespace: manuela-data-lake-central-s3-store
     project: datalake
     path: charts/datacenter/central-s3-store
-    kustomize: True
     ignoreDifferences:
     - group: apps
       kind: Deployment
@@ -139,7 +143,42 @@ clusterGroup:
     plugin:
       name: helm-with-kustomize
 
-#
+  - name: vault
+    namespace: vault
+    project: datacenter
+    chart: vault
+    repoURL: https://helm.releases.hashicorp.com
+    targetRevision: v0.19.0
+    overrides:
+    - name: global.openshift
+      value: "true"
+    - name: injector.enabled
+      value: "false"
+    - name: ui.enabled
+      value: "true"
+    - name: ui.serviceType
+      value: LoadBalancer
+    - name: server.route.enabled
+      value: "true"
+    - name: server.route.host
+      value: null
+    - name: server.route.tls.termination
+      value: edge
+    - name: server.image.repository
+      value: "registry.connect.redhat.com/hashicorp/vault"
+    - name: server.image.tag
+      value: "1.9.2-ubi"
+
+  - name: golang-external-secrets
+    namespace: golang-external-secrets
+    project: golang-external-secrets
+    path: common/golang-external-secrets
+
+  - name: external-secrets
+    namespace: external-secrets
+    project: golang-external-secrets
+    path: charts/datacenter/external-secrets
+
 #  To have apps in multiple flavors, use namespaces and use helm overrides as appropriate
 #
 #  - name: pipelines
@@ -150,15 +189,15 @@ clusterGroup:
 #    targetRevision: stable
 #    overrides:
 #    - name: myparam
-#      value: myparam 
-#  
+#      value: myparam
+#
 #  - name: pipelines
 #    namespace: staging
 #    project: datacenter
 #    path: applications/pipeline
 #    repoURL: https://github.com/you/applications.git
 #    targetRevision: main
-#  
+#
 #   Additional applications
 #   Be sure to include additional resources your apps will require
 #   +X machines

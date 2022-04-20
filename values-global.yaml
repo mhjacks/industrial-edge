@@ -20,3 +20,14 @@ global:
     username: mhjacks
     email: mhjacks@redhat.com
     dev_revision: main
+
+  s3:
+    bucket:
+      name: mhjacks-s3-bucket
+      region: us-west-2
+      message:
+        aggregation:
+          count: 100
+      custom:
+        endpoint:
+          enabled: false

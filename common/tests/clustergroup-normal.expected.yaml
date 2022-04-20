@@ -189,6 +189,7 @@ metadata:
   # Changing the name affects the ClusterRoleBinding, the generated secret,
   # route URL, and argocd.argoproj.io/managed-by annotations
   name: example-gitops
+  namespace: mypattern-example
   annotations:
     argocd.argoproj.io/compare-options: IgnoreExtraneous
 spec:
@@ -208,6 +209,7 @@ spec:
     --set global.namespace=$ARGOCD_APP_NAMESPACE
     --set global.pattern=mypattern
     --set global.hubClusterDomain=hub.example.com
+    --set global.localClusterDomain=region.example.com
     --set global.valuesDirectoryURL=https://github.com/pattern-clone/mypattern/raw/main
     --post-renderer ./kustomize\"]
     \ \n"
