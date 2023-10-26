@@ -10,21 +10,21 @@ global:
     installPlanApproval: Automatic
 
   imageregistry:
-    account: PLAINTEXT
+    account: martjack
     hostname: quay.io
     type: quay
 
   git:
     hostname: github.com
-    account: PLAINTEXT
+    account: mhjacks
     #username: PLAINTEXT
-    email: SOMEWHERE@EXAMPLE.COM
+    email: mhjacks@redhat.com
     dev_revision: main
 
   s3:
     bucket:
-      name: BUCKETNAME
-      region: AWSREGION
+      name: mhjacks-s3
+      region: us-west-1
       message:
         aggregation:
           count: 50
