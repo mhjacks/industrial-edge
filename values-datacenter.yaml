@@ -89,7 +89,6 @@ clusterGroup:
 #
     configManagementPlugins:
       - name: kustomize-with-helm
-        image: busybox
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
           kind: ConfigManagementPlugin
@@ -102,7 +101,6 @@ clusterGroup:
             args: ["build", "--enable-helm"]
 
       - name: kustomize-version
-        image: busybox
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
           kind: ConfigManagementPlugin
@@ -115,7 +113,6 @@ clusterGroup:
             args: ["kustomize version 1>&2 && exit 1"]
 
       - name: helm-with-kustomize
-        image: registry.redhat.io/openshift-gitops-1/argocd-rhel8@sha256:0afacc5a305609513811269b28f44fbc0764711c4ab83a43a  6979081709ecbec
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
           kind: ConfigManagementPlugin
