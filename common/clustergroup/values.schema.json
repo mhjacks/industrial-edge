@@ -310,6 +310,9 @@
             "$ref": "#/definitions/Applications"
           }
         },
+        "argoCD": {
+          "$ref": "#/definitions/ArgoCD"
+        },
         "imperative": {
           "$ref": "#/definitions/Imperative"
         },
@@ -480,6 +483,21 @@
         "project"
       ],
       "title": "Applications"
+    },
+    "ArgoCD": {
+      "type": "object",
+      "description": "Details for configuring ArgoCD instances in particular",
+      "additionalProperties": true,
+      "properties": {
+        "legacyConfigManagementPlugins": {
+          "type": "string",
+          "description": "The legacy (and not deprecated) string-based configManagementPlugins config"
+        },
+        "configManagementPlugins": {
+          "type": "array",
+          "description": "The new configManagementPlugins array, will also generate configMaps to inject into the plugins"
+        }
+      }
     },
     "IndexImages": {
       "type": "object",

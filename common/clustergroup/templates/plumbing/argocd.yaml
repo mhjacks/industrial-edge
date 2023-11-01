@@ -39,6 +39,10 @@ spec:
   # Not the greatest way to pass git/quay info to sub-applications, but it will do until
   # we can support helmChart with kustomize
   # The other option is to pass them in as environment variables eg. BLUEPRINT_VERSION
+  {{- if len $.Values.clusterGroup.argoCD.legacyConfigManagementPlugins }}
+  configManagementPlugins: |
+    {{ $.Values.clusterGroup.argoCD.legacyConfigManagementPlugins }}
+  {{- end }}
   applicationSet:
     resources:
       limits:
@@ -71,6 +75,37 @@ spec:
   rbac:
     defaultPolicy: role:admin
   repo:
+{{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
+    sidecarContainers:
+{{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
+      - name: {{ $cmp.name }}
+        command: [/var/run/argocd/argocd-cmp-server]
+{{- if $cmp.image }}
+        image: {{ $cmp.image }}
+{{- end }}
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 999
+        volumeMounts:
+          - mountPath: /var/run/argocd
+            name: var-files
+          - mountPath: /home/argocd/cmp-server/plugins
+            name: plugins
+          - mountPath: /tmp
+            name: tmp
+          - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+            subPath: plugin.yaml
+            name: {{ $cmp.name }}
+{{- end }}
+{{- end }}
+{{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
+    volumes:
+{{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
+      - configMap:
+          name: "argocd-cmp-{{ $cmp.name }}"
+        name: {{ $cmp.name }}
+{{- end }}
+{{- end }}
     resources:
       limits:
         cpu: "1"
