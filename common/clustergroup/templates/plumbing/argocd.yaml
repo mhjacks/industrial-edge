@@ -82,8 +82,6 @@ spec:
 {{- if $cmp.image }}
         image: {{ $cmp.image }}
 {{- end }}
-        securityContext:
-          runAsNonRoot: true
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
