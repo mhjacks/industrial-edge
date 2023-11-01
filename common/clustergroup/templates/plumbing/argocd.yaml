@@ -40,8 +40,7 @@ spec:
   # we can support helmChart with kustomize
   # The other option is to pass them in as environment variables eg. BLUEPRINT_VERSION
   {{- if len $.Values.clusterGroup.argoCD.legacyConfigManagementPlugins }}
-  configManagementPlugins: |
-    {{ $.Values.clusterGroup.argoCD.legacyConfigManagementPlugins }}
+  configManagementPlugins: | {{ $.Values.clusterGroup.argoCD.legacyConfigManagementPlugins | nindent 4 }}
   {{- end }}
   applicationSet:
     resources:
