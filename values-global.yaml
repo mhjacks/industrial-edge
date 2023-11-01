@@ -3,6 +3,8 @@ main:
 
 global:
   pattern: industrial-edge
+  multiSourceConfig:
+    enabled: false
 
   options:
     useCSV: False
