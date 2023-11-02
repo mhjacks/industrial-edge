@@ -81,7 +81,10 @@ spec:
         command: [/var/run/argocd/argocd-cmp-server]
 {{- if $cmp.image }}
         image: {{ $cmp.image }}
+        imagePullPolicy: {{ coalesce $cmp.imagePullPolicy "Always" }}
 {{- end }}
+        securityContext:
+          runAsNonRoot: true
         volumeMounts:
           - mountPath: /var/run/argocd
             name: var-files
