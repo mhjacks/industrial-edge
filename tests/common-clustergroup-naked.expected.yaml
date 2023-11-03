@@ -40,6 +40,7 @@ data:
       applications: {}
       argoCD:
         configManagementPlugins: []
+        initContainers: []
         legacyConfigManagementPlugins: ""
       imperative:
         activeDeadlineSeconds: 3600

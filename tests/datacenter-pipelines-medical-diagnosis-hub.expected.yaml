@@ -7,9 +7,9 @@ metadata:
 data:
   DESCRIPTION: "Config keys for openshift-pipelines"
   IMAGE_PROVIDER: quay.io
-  IMAGE_ACCOUNT: PLAINTEXT
-  GIT_EMAIL: SOMEWHERE@EXAMPLE.COM
-  GIT_DEV_REPO_URL: https://github.com/PLAINTEXT/manuela-dev.git
+  IMAGE_ACCOUNT: martjack
+  GIT_EMAIL: mhjacks@redhat.com
+  GIT_DEV_REPO_URL: https://github.com/mhjacks/manuela-dev.git
   GIT_DEV_REPO_REVISION: main
   GIT_OPS_REPO_TEST_URL: https://github.com/pattern-clone/mypattern
   GIT_OPS_REPO_TEST_REVISION: main

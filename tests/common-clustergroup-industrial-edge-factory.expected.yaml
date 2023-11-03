@@ -85,6 +85,7 @@ data:
         project: factory
       argoCD:
         configManagementPlugins: []
+        initContainers: []
         legacyConfigManagementPlugins: ""
       imperative:
         activeDeadlineSeconds: 3600
@@ -144,16 +145,18 @@ data:
       clusterVersion: "4.12"
       extraValueFiles: []
       git:
-        account: PLAINTEXT
+        account: mhjacks
         dev_revision: main
-        email: SOMEWHERE@EXAMPLE.COM
+        email: mhjacks@redhat.com
         hostname: github.com
       hubClusterDomain: apps.hub.example.com
       imageregistry:
-        account: PLAINTEXT
+        account: martjack
         hostname: quay.io
         type: quay
       localClusterDomain: apps.region.example.com
+      multiSourceConfig:
+        enabled: false
       namespace: pattern-namespace
       options:
         applicationRetryLimit: 20
@@ -170,8 +173,8 @@ data:
           message:
             aggregation:
               count: 50
-          name: BUCKETNAME
-          region: AWSREGION
+          name: mhjacks-s3
+          region: us-west-1
       targetRevision: main
     main:
       clusterGroupName: datacenter
