@@ -89,7 +89,8 @@ clusterGroup:
 #
     configManagementPlugins:
       - name: helm-with-kustomize
-        image: quay.io/argoproj/argocd:latest
+        image: registry.redhat.io/openshift-gitops-1/argocd-rhel8@sha256:0afacc5a305609513811269b28f44fbc0764711c4ab83a43a6979081709ecbec
+        #image: quay.io/argoproj/argocd:latest
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
           kind: ConfigManagementPlugin
