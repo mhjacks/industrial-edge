@@ -1,5 +1,6 @@
 {{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
+{{- if $cmp.pluginConfig }}
 ---
 kind: ConfigMap
 apiVersion: v1
@@ -8,5 +9,6 @@ metadata:
   namespace: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
 data:
   "plugin.yaml": | {{ $cmp.pluginConfig | nindent 4 }}
+{{- end }}
 {{- end }}
 {{- end }}

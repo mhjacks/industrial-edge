@@ -74,15 +74,16 @@ spec:
   rbac:
     defaultPolicy: role:admin
   repo:
+{{- if len $.Values.clusterGroup.argoCD.initContainers }}
+    initContainers: {{ $.Values.clusterGroup.argoCD.initContainers | toPrettyJson }}
+{{- end }}
 {{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
     sidecarContainers:
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
       - name: {{ $cmp.name }}
         command: [/var/run/argocd/argocd-cmp-server]
-{{- if $cmp.image }}
         image: {{ $cmp.image }}
         imagePullPolicy: {{ coalesce $cmp.imagePullPolicy "Always" }}
-{{- end }}
         securityContext:
           runAsNonRoot: true
         volumeMounts:
@@ -92,9 +93,11 @@ spec:
             name: plugins
           - mountPath: /tmp
             name: tmp
+{{- if $cmp.pluginConfig }}
           - mountPath: /home/argocd/cmp-server/config/plugin.yaml
             subPath: plugin.yaml
             name: {{ $cmp.name }}
+{{- end }}
 {{- end }}
 {{- end }}
 {{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
