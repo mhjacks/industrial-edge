@@ -88,32 +88,6 @@ clusterGroup:
 #              --post-renderer ./kustomize"]
 #
     configManagementPlugins:
-      - name: kustomize-with-helm
-        image: quay.io/argoproj/argocd:latest
-        pluginConfig: |
-          apiVersion: argoproj.io/v1alpha1
-          kind: ConfigManagementPlugin
-          metadata:
-            name: kustomize-with-helm
-          spec:
-            version: v1.0
-            generate:
-              command: ["kustomize"]
-              args: ["build", "--enable-helm"]
-
-      - name: kustomize-version
-        image: quay.io/argoproj/argocd:latest
-        pluginConfig: |
-          apiVersion: argoproj.io/v1alpha1
-          kind: ConfigManagementPlugin
-          metadata:
-            name: kustomize-version
-          spec:
-            version: v1.0
-            generate:
-              command: ["sh", "-c"]
-              args: ["kustomize version 1>&2 && exit 1"]
-
       - name: helm-with-kustomize
         image: quay.io/argoproj/argocd:latest
         pluginConfig: |
