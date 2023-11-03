@@ -573,6 +573,13 @@ spec:
     importPolicy: {}
     referencePolicy:
       type: Local
+  - name: 0.3.2-35
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-anomaly-detection:0.3.2-35
+    importPolicy: {}
+    referencePolicy:
+      type: Local
 ---
 # Source: manuela-stormshift/templates/line-dashboard/line-dashboard-is.yaml
 apiVersion: image.openshift.io/v1
@@ -595,6 +602,13 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-frontend:0.3.1-49
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.1-50
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-frontend:0.3.1-50
     importPolicy: {}
     referencePolicy:
       type: Local
@@ -623,6 +637,13 @@ spec:
     importPolicy: {}
     referencePolicy:
       type: Local
+  - name: 0.3.1-36
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-software-sensor:0.3.1-36
+    importPolicy: {}
+    referencePolicy:
+      type: Local
 ---
 # Source: manuela-stormshift/templates/messaging/messaging-is.yaml
 apiVersion: image.openshift.io/v1
@@ -645,6 +666,13 @@ spec:
     from:
       kind: DockerImage
       name: quay.io/martjack/iot-consumer:0.3.2-54
+    importPolicy: {}
+    referencePolicy:
+      type: Local
+  - name: 0.3.2-55
+    from:
+      kind: DockerImage
+      name: quay.io/martjack/iot-consumer:0.3.2-55
     importPolicy: {}
     referencePolicy:
       type: Local
