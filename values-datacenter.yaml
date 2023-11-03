@@ -96,9 +96,9 @@ clusterGroup:
             name: kustomize-with-helm
           spec:
             version: v1.0
-          generate:
-            command: ["kustomize"]
-            args: ["build", "--enable-helm"]
+            generate:
+              command: ["kustomize"]
+              args: ["build", "--enable-helm"]
 
       - name: kustomize-version
         pluginConfig: |
@@ -108,9 +108,9 @@ clusterGroup:
             name: kustomize-version
           spec:
             version: v1.0
-          generate:
-            command: ["sh", "-c"]
-            args: ["kustomize version 1>&2 && exit 1"]
+            generate:
+              command: ["sh", "-c"]
+              args: ["kustomize version 1>&2 && exit 1"]
 
       - name: helm-with-kustomize
         pluginConfig: |
@@ -120,23 +120,23 @@ clusterGroup:
             name: helm-with-kustomize
           spec:
             version: v1.0
-          init:
-            command: ["/bin/sh", "-c"]
-            args: ["helm dependency build"]
-          generate:
-            command: ["/bin/bash", "-c"]
-            args: ["helm template . --name-template ${ARGOCD_APP_NAME:0:52}
-                -f $(git rev-parse --show-toplevel)/values-global.yaml
-                -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
-                --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL
-                --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION
-                --set global.namespace=$ARGOCD_APP_NAMESPACE
-                --set global.pattern={{ .Values.global.pattern }}
-                --set global.clusterDomain={{ .Values.global.clusterDomain }}
-                --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
-                --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
-                --set clusterGroup.name={{ .Values.clusterGroup.name }}
-                --post-renderer ./kustomize"]
+            init:
+              command: ["/bin/sh", "-c"]
+              args: ["helm dependency build"]
+            generate:
+              command: ["/bin/bash", "-c"]
+              args: ["helm template . --name-template ${ARGOCD_APP_NAME:0:52}
+                  -f $(git rev-parse --show-toplevel)/values-global.yaml
+                  -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
+                  --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL
+                  --set global.targetRevision=$ARGOCD_APP_SOURCE_TARGET_REVISION
+                  --set global.namespace=$ARGOCD_APP_NAMESPACE
+                  --set global.pattern={{ .Values.global.pattern }}
+                  --set global.clusterDomain={{ .Values.global.clusterDomain }}
+                  --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
+                  --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
+                  --set clusterGroup.name={{ .Values.clusterGroup.name }}
+                  --post-renderer ./kustomize"]
 
   applications:
     acm:
