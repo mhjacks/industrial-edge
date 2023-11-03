@@ -34,6 +34,7 @@ clusterGroup:
           metadata:
             name: helm-with-kustomize
           spec:
+            preserveFileMode: true
             init:
               command: ["/bin/sh", "-c"]
               args: ["helm dependency build"]
