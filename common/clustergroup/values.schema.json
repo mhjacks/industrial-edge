@@ -507,10 +507,6 @@
       }
     },
     "ArgoCDConfigManagementPlugin": {
-      "required": [
-        "name",
-        "image"
-      ],
       "type": "object",
       "additionalProperties": true,
       "properties": {
@@ -527,10 +523,14 @@
           "description": "Image pull policy for the sidecar. Defaults to 'Always'"
         },
         "pluginConfig": {
-          "type": "object",
+          "type": "string",
           "description": "Configuration file to project into sidecar container. This will create a configMap if specified"
         }
-      }
+      },
+      "required": [
+        "name",
+        "image"
+      ]
     },
     "IndexImages": {
       "type": "object",
