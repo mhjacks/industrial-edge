@@ -97,6 +97,7 @@ clusterGroup:
           metadata:
             name: helm-with-kustomize
           spec:
+            preserveFileMode: true
             parameters:
               preserveFileMode: true
             init:
