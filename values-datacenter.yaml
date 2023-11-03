@@ -96,7 +96,6 @@ clusterGroup:
           metadata:
             name: helm-with-kustomize
           spec:
-            version: v1.0
             init:
               command: ["/bin/sh", "-c"]
               args: ["helm dependency build"]
