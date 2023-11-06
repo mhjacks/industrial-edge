@@ -1,10 +1,10 @@
 main:
   clusterGroupName: datacenter
+  multiSourceConfig:
+    enabled: false
 
 global:
   pattern: industrial-edge
-  multiSourceConfig:
-    enabled: false
 
   options:
     useCSV: False
