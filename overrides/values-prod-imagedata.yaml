@@ -18,7 +18,7 @@ iot_consumer:
   bootstrap_image: quay.io/hybridcloudpatterns/messaging:0.3.2
   bootstrap_tag: 0.3.2
   image_location: image-registry.openshift-image-registry.svc:5000/manuela-stormshift-messaging/messaging
-  tag: 0.3.2
+  tag: 0.3.2-69
 iot_frontend:
   updated_images: false
   bootstrap_image: quay.io/hybridcloudpatterns/iot-frontend:0.3.1
