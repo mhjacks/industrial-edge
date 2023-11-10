@@ -1,7 +1,9 @@
 # NOTE: This file will be edited by the pipeline processes as new versions are built through the pipelines
 # prod_version and test_version keys with built values will be edited when the pipelines run
 ---
-machine_sensor: {}
+machine_sensor:
+  updated_images: true
+  tag: 0.3.1-41
 iot_anomaly_detection:
   updated_images: true
   tag: 0.3.2-53
