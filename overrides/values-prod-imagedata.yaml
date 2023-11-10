@@ -11,7 +11,8 @@ iot_consumer:
     - 0.3.2-74
 iot_frontend:
   tag: 0.3.1-61
-  built_tags: []
+  built_tags:
+    - 0.3.1-61
 machine_sensor:
   tag: 0.3.1-42
   built_tags:
