@@ -2,9 +2,8 @@
 # prod_version and test_version keys with built values will be edited when the pipelines run
 ---
 machine_sensor: {}
-
-iot_anomaly_detection: {}
-
+iot_anomaly_detection:
+  updated_images: true
+  tag: 0.3.2-53
 iot_consumer: {}
-
 iot_frontend: {}
