@@ -5,5 +5,7 @@ machine_sensor: {}
 iot_anomaly_detection:
   updated_images: true
   tag: 0.3.2-53
-iot_consumer: {}
+iot_consumer:
+  updated_images: true
+  tag: 0.3.2-71
 iot_frontend: {}
