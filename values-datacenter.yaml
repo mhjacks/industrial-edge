@@ -105,7 +105,7 @@ clusterGroup:
               args: ["helm dependency build"]
             generate:
               command: ["/bin/bash", "-c"]
-              args: ["'$(pwd > /tmp/pwd)' &&'$(ls -al > /tmp/diroutput)' && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
+              args: ["'$(pwd > /var/run/argocd/pwd)' &&'$(ls -al > /var/run/argocd/diroutput)' && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
                 -f $(git rev-parse --show-toplevel)/values-global.yaml
                 -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
                 --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL
