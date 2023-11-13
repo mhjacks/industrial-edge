@@ -105,7 +105,7 @@ clusterGroup:
               args: ["helm dependency build"]
             generate:
               command: ["/bin/bash", "-c"]
-              args: ["helm template . --name-template ${ARGOCD_APP_NAME:0:52}
+              args: ["pwd && ls -al && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
                   -f $(git rev-parse --show-toplevel)/values-global.yaml
                   -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
                   --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL
@@ -115,8 +115,8 @@ clusterGroup:
                   --set global.clusterDomain={{ .Values.global.clusterDomain }}
                   --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
                   --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
-                  --set clusterGroup.name={{ .Values.clusterGroup.name }}
-                  --post-renderer ./kustomize"]
+                  --set clusterGroup.name={{ .Values.clusterGroup.name }}"]
+                  #--post-renderer ./kustomize"]
 
   applications:
     acm:
