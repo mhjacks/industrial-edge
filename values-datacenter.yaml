@@ -102,7 +102,8 @@ clusterGroup:
               preserveFileMode: true
             init:
               command: ["/bin/sh", "-c"]
-              args: ["helm dependency build"]
+              args: ["pwd && ls -al && helm dependency build"]
+              #args: ["helm dependency build"]
             generate:
               command: ["/bin/bash", "-c"]
               args: ["pwd && ls -al && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
@@ -115,8 +116,8 @@ clusterGroup:
                   --set global.clusterDomain={{ .Values.global.clusterDomain }}
                   --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
                   --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
-                  --set clusterGroup.name={{ .Values.clusterGroup.name }}"]
-                  #--post-renderer ./kustomize"]
+                  --set clusterGroup.name={{ .Values.clusterGroup.name }}
+                  --post-renderer ./kustomize"]
 
   applications:
     acm:
