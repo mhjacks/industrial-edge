@@ -89,7 +89,7 @@ clusterGroup:
 #
     configManagementPlugins:
       - name: helm-with-kustomize
-        image: quay.io/hybridcloudpatterns/utility-container:latest
+        image: quay.io/martjack/scratch-container:latest
         #image: quay.io/argoproj/argocd:latest
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
@@ -105,7 +105,7 @@ clusterGroup:
               args: ["helm dependency build"]
             generate:
               command: ["/bin/bash", "-c"]
-              args: ["'$(pwd > /var/run/argocd/pwd)' &&'$(ls -al > /var/run/argocd/diroutput)' && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
+              args: ["helm template . --name-template ${ARGOCD_APP_NAME:0:52}
                 -f $(git rev-parse --show-toplevel)/values-global.yaml
                 -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
                 --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL
@@ -116,7 +116,7 @@ clusterGroup:
                 --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
                 --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
                 --set clusterGroup.name={{ .Values.clusterGroup.name }}
-                --post-renderer ./kustomize"]
+                --post-renderer helm-with-kustomize"]
 
   applications:
     acm:
