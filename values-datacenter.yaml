@@ -116,7 +116,7 @@ clusterGroup:
                 --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
                 --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
                 --set clusterGroup.name={{ .Values.clusterGroup.name }}
-                --post-renderer helm-with-kustomize"]
+                --post-renderer ./kustomize"]
 
   applications:
     acm:
