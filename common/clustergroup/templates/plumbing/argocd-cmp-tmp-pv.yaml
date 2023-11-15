@@ -1,0 +1,13 @@
+{{- if $.Values.clusterGroup.argoCD.usePVCforCMP }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pv-cmp-tmp
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+{{- end }}

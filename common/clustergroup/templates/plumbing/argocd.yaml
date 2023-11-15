@@ -99,8 +99,14 @@ spec:
 {{- end }}
 {{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
     volumes:
+{{- if $.Values.clusterGroup.argoCD.usePVCforCMP }}
+      - name: cmp-tmp
+        persistentVolumeClaim:
+          claimName: pv-cmp-tmp
+{{- else }}
       - emptyDir: {}
         name: cmp-tmp
+{{- end }}
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
       - configMap:
           name: "argocd-cmp-{{ $cmp.name }}"
