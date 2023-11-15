@@ -27,19 +27,19 @@ clusterGroup:
 
     amqstreams-prod-dev:
       name: amq-streams
-      namespaces: 
+      namespaces:
       - manuela-data-lake
       - manuela-tst-all
 
     camelk-prod-dev:
       name: red-hat-camel-k
-      namespaces: 
+      namespaces:
       - manuela-data-lake
       - manuela-tst-all
 
     seldon-prod-dev:
       name: seldon-operator
-      namespaces: 
+      namespaces:
       - manuela-ml-workspace
       - manuela-tst-all
       source: community-operators
@@ -47,7 +47,7 @@ clusterGroup:
     pipelines:
       name: openshift-pipelines-operator-rh
       source: redhat-operators
-      
+
     odh:
       name: opendatahub-operator
       source: community-operators
@@ -59,6 +59,8 @@ clusterGroup:
   - vault
 
   argoCD:
+    usePVCforCMP: true
+
 #    legacyConfigManagementPlugins: |
 #      - name: kustomize-version
 #        generate:
@@ -116,7 +118,7 @@ clusterGroup:
                 --set global.hubClusterDomain={{ .Values.global.hubClusterDomain }}
                 --set global.localClusterDomain={{ coalesce .Values.global.localClusterDomain .Values.global.hubClusterDomain }}
                 --set clusterGroup.name={{ .Values.clusterGroup.name }}
-                --post-renderer helm-with-kustomize"]
+                --post-renderer ./kustomize"]
 
   applications:
     acm:
