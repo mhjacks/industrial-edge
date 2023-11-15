@@ -4,6 +4,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: pv-cmp-tmp
+  namespace: {{ $.Values.global.pattern }}-{{ $.Values.clusterGroup.name }}
 spec:
   accessModes:
     - ReadWriteOnce
