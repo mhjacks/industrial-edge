@@ -2,6 +2,8 @@ main:
   clusterGroupName: datacenter
   multiSourceConfig:
     enabled: false
+  gitops:
+    channel: latest
 
 global:
   pattern: industrial-edge
