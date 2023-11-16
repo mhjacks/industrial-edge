@@ -59,7 +59,7 @@ clusterGroup:
   - vault
 
   argoCD:
-    usePVCforCMP: true
+    #usePVCforCMP: true
 
 #    legacyConfigManagementPlugins: |
 #      - name: kustomize-version
