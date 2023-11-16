@@ -217,8 +217,6 @@ data:
         type: quay
       localClusterDomain: apps.region.example.com
       multiClusterTarget: all
-      multiSourceConfig:
-        enabled: false
       namespace: pattern-namespace
       options:
         applicationRetryLimit: 20
@@ -243,6 +241,10 @@ data:
       git:
         repoURL: https://github.com/pattern-clone/mypattern
         revision: main
+      gitops:
+        channel: latest
+      multiSourceConfig:
+        enabled: false
     secretStore:
       kind: ClusterSecretStore
       name: vault-backend
@@ -1023,16 +1025,6 @@ spec:
   href: 'https://example-gitops-server-mypattern-example.apps.region.example.com'
   location: ApplicationMenu
   text: 'Example ArgoCD'
----
-# Source: clustergroup/templates/core/operatorgroup.yaml
-apiVersion: operators.coreos.com/v1
-kind: OperatorGroup
-metadata:
-  name: open-cluster-management-operator-group
-  namespace: open-cluster-management
-spec:
-  targetNamespaces:
-  - open-cluster-management
 ---
 # Source: clustergroup/templates/core/operatorgroup.yaml
 apiVersion: operators.coreos.com/v1

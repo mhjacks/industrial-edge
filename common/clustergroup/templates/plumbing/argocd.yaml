@@ -79,7 +79,9 @@ spec:
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
       - name: {{ $cmp.name }}
         command: [/var/run/argocd/argocd-cmp-server]
-        args: ["--loglevel=debug"]
+{{- if $cmp.pluginArgs }}
+        args: {{ $cmp.pluginArgs | toPrettyJson }}
+{{- end }}
         image: {{ $cmp.image }}
         imagePullPolicy: {{ coalesce $cmp.imagePullPolicy "Always" }}
         securityContext:
@@ -93,21 +95,15 @@ spec:
             name: cmp-tmp
 {{- if $cmp.pluginConfig }}
           - mountPath: /home/argocd/cmp-server/config/plugin.yaml
-            subPath: {{ coalesce $cmp.subPath "plugin.yaml" }}
+            subPath: plugin.yaml
             name: {{ $cmp.name }}
 {{- end }}
 {{- end }}
 {{- end }}
 {{- if len $.Values.clusterGroup.argoCD.configManagementPlugins }}
     volumes:
-{{- if $.Values.clusterGroup.argoCD.usePVCforCMP }}
-      - name: cmp-tmp
-        persistentVolumeClaim:
-          claimName: pv-cmp-tmp
-{{- else }}
       - emptyDir: {}
         name: cmp-tmp
-{{- end }}
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
       - configMap:
           name: "argocd-cmp-{{ $cmp.name }}"

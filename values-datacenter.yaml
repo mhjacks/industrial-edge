@@ -92,7 +92,8 @@ clusterGroup:
     configManagementPlugins:
       - name: helm-with-kustomize
         image: quay.io/martjack/scratch-container:latest
-        #image: quay.io/argoproj/argocd:latest
+        pluginArgs:
+          - '--loglevel=debug'
         pluginConfig: |
           apiVersion: argoproj.io/v1alpha1
           kind: ConfigManagementPlugin
@@ -105,7 +106,7 @@ clusterGroup:
               args: ["helm dependency build"]
             generate:
               command: ["/bin/bash", "-c"]
-              args: ["ls -al 1>&2 && helm template . --name-template ${ARGOCD_APP_NAME:0:52}
+              args: ["helm template . --name-template ${ARGOCD_APP_NAME:0:52}
                 -f $(git rev-parse --show-toplevel)/values-global.yaml
                 -f $(git rev-parse --show-toplevel)/values-{{ .Values.clusterGroup.name }}.yaml
                 --set global.repoURL=$ARGOCD_APP_SOURCE_REPO_URL

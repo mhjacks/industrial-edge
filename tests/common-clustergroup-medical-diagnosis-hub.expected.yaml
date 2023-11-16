@@ -303,8 +303,6 @@ data:
         hostname: quay.io
         type: quay
       localClusterDomain: apps.region.example.com
-      multiSourceConfig:
-        enabled: false
       namespace: pattern-namespace
       options:
         applicationRetryLimit: 20
@@ -329,6 +327,10 @@ data:
       git:
         repoURL: https://github.com/pattern-clone/mypattern
         revision: main
+      gitops:
+        channel: latest
+      multiSourceConfig:
+        enabled: false
     secretStore:
       kind: ClusterSecretStore
       name: vault-backend

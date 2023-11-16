@@ -510,10 +510,6 @@
         "initContainers": {
           "type": "array",
           "description": "A list of initContainers to add to the repo-server if needed"
-        },
-        "usePVCforCMP": {
-          "type": "boolean",
-          "description": "Whether to use a PVC for the configManagementPlugin tmp volume"
         }
       }
     },
@@ -536,6 +532,10 @@
         "pluginConfig": {
           "type": "string",
           "description": "Configuration file to project into sidecar container. This will create a configMap if specified"
+        },
+        "pluginArgs": {
+          "type": "array",
+          "description": "Additional args to pass to the cmpserver command, usually loglevel"
         }
       },
       "required": [
