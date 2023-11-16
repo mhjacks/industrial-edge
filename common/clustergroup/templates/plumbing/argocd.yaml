@@ -79,6 +79,7 @@ spec:
 {{- range $cmp := $.Values.clusterGroup.argoCD.configManagementPlugins }}
       - name: {{ $cmp.name }}
         command: [/var/run/argocd/argocd-cmp-server]
+        args: ["--loglevel=info"]
         image: {{ $cmp.image }}
         imagePullPolicy: {{ coalesce $cmp.imagePullPolicy "Always" }}
         securityContext:
