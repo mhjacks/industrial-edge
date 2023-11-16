@@ -100,8 +100,6 @@ clusterGroup:
             name: helm-with-kustomize
           spec:
             preserveFileMode: true
-            parameters:
-              preserveFileMode: true
             init:
               command: ["/bin/sh", "-c"]
               args: ["helm dependency build"]
