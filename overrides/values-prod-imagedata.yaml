@@ -15,3 +15,7 @@ machine_sensor:
   tag: 0.3.1-48
   built_tags:
     - 0.3.1-48
+iot_frontend:
+  tag: 0.3.1-68
+  built_tags:
+    - 0.3.1-68
