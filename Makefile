@@ -26,8 +26,9 @@ help:
 pipeline-setup: ## calls the helm pipeline-setup
 	helm upgrade --install $(NAME)-secrets charts/secrets/pipeline-setup $(HELM_OPTS)
 
-install: pipeline-setup operator-deploy post-install ## installs the pattern, inits the vault and loads the secrets
-	@echo "Installed"
+.PHONY: operator-deploy
+operator-deploy operator-upgrade: validate-prereq validate-origin validate-cluster ## runs helm install
+	@common/scripts/deploy-pattern.sh $(NAME) $(PATTERN_INSTALL_CHART) $(HELM_OPTS)
 
 post-install: ## Post-install tasks
 	make load-secrets
