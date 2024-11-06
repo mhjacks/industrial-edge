@@ -75,7 +75,7 @@ clusterGroup:
 
     ods:
       name: rhods-operator
-      channel: alpha
+      channel: fast
       namespace: redhat-ods-operator
 
   projects:
