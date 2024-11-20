@@ -11,7 +11,11 @@ clusterGroup:
   - golang-external-secrets
   - open-cluster-management
   - manuela-ml-workspace
-  - manuela-tst-all
+  - manuela-tst-all:
+      operatorGroup: true
+      labels:
+        modelmesh-enabled: 'true'
+        opendatahub.io/dashboard: 'true'
   - manuela-ci
   - manuela-data-lake
   - staging
@@ -26,16 +30,9 @@ clusterGroup:
   - edge-ci
   - ml-development:
       labels:
-        app.kubernetes.io/instance: edge-anomaly-detection-hub
-        kubernetes.io/metadata.name: ml-development
-        argocd.argoproj.io/managed-by: edge-anomaly-detection-hub
         modelmesh-enabled: 'true'
         opendatahub.io/dashboard: 'true'
-  - redhat-ods-applications:
-      labels:
-        app.kubernetes.io/instance: edge-anomaly-detection-hub
-        kubernetes.io/metadata.name: redhat-ods-applications
-        argocd.argoproj.io/managed-by: edge-anomaly-detection-hub
+  - redhat-ods-applications
     #  operatorgroupExcludes:
     #  - manuela-ml-workspace
 
@@ -122,10 +119,6 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     storage:
       name: storage
@@ -152,10 +145,6 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     data-science-project:
       name: data-science-project
@@ -175,10 +164,6 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     test:
       name: manuela-test
@@ -232,6 +217,25 @@ clusterGroup:
 #    path: path/to/myapp
 #    repoURL: https://github.com/vendor/applications.git
 #    targetRevision: main
+
+  imperative:
+    # For additional overrides that apply to the jobs, please refer to
+    # https://github.com/validatedpatterns/clustergroup-chart/
+    # schedule: "*/10 * * * *" # Default schedule
+    jobs:
+      - name: clone-upstream-repos-gitea
+        playbook: ./ansible/playbooks/clone_upstream_repos_gitea.yml
+        extravars:
+          - "repo_name=manuela-dev"
+          - "upstream_repo_url=https://github.com/validatedpatterns-demos/manuela-dev"
+        timeout: 180
+      - name: copy-initial-model-to-incluster-s3
+        image: quay.io/hybridcloudpatterns/utility-container:latest
+        playbook: ./ansible/playbooks/copy_initial_model_to_incluster_s3.yml
+        extravars:
+          - "bucket_name=user-bucket"
+          - "src_file=ansible/files/model.joblib"
+        timeout: 180
 
   managedClusterGroups:
     factory:
