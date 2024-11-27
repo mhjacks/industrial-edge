@@ -15,7 +15,7 @@ oc = os.environ["HOME"] + "/oc_client/oc"
 @pytest.mark.check_logging_hub
 def test_check_logging_hub():
     logger.info("Checking logs for machine-sensor-1 in manuela-tst-all namespace")
-    app_string = "application=machine-sensor-1"
+    app_string = "app=machine-sensor-1"
     log_out = get_log_output(app_string, namespace="manuela-tst-all")
     search_terms = ["Current", "Measure", "vibration"]
     if not search_log_output(log_out, search_terms):
@@ -26,7 +26,7 @@ def test_check_logging_hub():
         logger.info("PASS: Found expected output in machine-sensor-1 log")
 
     logger.info("Checking logs for machine-sensor-2 in manuela-tst-all namespace")
-    app_string = "application=machine-sensor-2"
+    app_string = "app=machine-sensor-2"
     log_out = get_log_output(app_string, namespace="manuela-tst-all")
     search_terms = ["Current", "Measure", "vibration"]
     if not search_log_output(log_out, search_terms):
@@ -50,11 +50,11 @@ def test_check_logging_hub():
     logger.info(
         "Checking logs for anomaly-detection-predictor in manuela-tst-all" " namespace"
     )
-    app_string = "seldon-app=anomaly-detection-predictor"
+    app_string = "modelmesh-service=modelmesh-serving"
     log_out = get_log_output(
-        app_string, namespace="manuela-tst-all", container="anomaly-detection"
+        app_string, namespace="manuela-tst-all", container="mlserver"
     )
-    search_terms = ["Predict"]
+    search_terms = ["/inference.GRPCInferenceService/ModelInfer"]
     if not search_log_output(log_out, search_terms):
         err_msg = "Failed to find expected output in anomaly-detection-predictor log"
         logger.error(f"FAIL: {err_msg}")

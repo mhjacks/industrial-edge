@@ -2,6 +2,9 @@ main:
   clusterGroupName: datacenter
   multiSourceConfig:
     enabled: true
+    clusterGroupChartVersion: 0.9.*
+  git:
+    repoUpstreamURL: https://github.com/mamurak/industrial-edge
 
 global:
   pattern: industrial-edge
@@ -17,19 +20,8 @@ global:
     type: quay
 
   git:
-    hostname: github.com
-    account: PLAINTEXT
+    account: gitea_admin
     #username: PLAINTEXT
     email: SOMEWHERE@EXAMPLE.COM
+    # Branch used for the manuela-dev repository
     dev_revision: main
-
-  s3:
-    bucket:
-      name: BUCKETNAME
-      region: AWSREGION
-      message:
-        aggregation:
-          count: 50
-      custom:
-        endpoint:
-          enabled: false

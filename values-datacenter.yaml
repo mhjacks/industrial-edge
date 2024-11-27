@@ -1,16 +1,23 @@
+storageSystem:
+  deploy: true
+  inventory:
+    useSpecificNodes: false
+
 clusterGroup:
   name: datacenter
   isHubCluster: true
 
   namespaces:
   - golang-external-secrets
-  - external-secrets
   - open-cluster-management
   - manuela-ml-workspace
-  - manuela-tst-all
+  - manuela-tst-all:
+      operatorGroup: true
+      labels:
+        modelmesh-enabled: 'true'
+        opendatahub.io/dashboard: 'true'
   - manuela-ci
   - manuela-data-lake
-  - staging
   - vault
   - openshift-pipelines
   - openshift-storage
@@ -22,16 +29,9 @@ clusterGroup:
   - edge-ci
   - ml-development:
       labels:
-        app.kubernetes.io/instance: edge-anomaly-detection-hub
-        kubernetes.io/metadata.name: ml-development
-        argocd.argoproj.io/managed-by: edge-anomaly-detection-hub
         modelmesh-enabled: 'true'
         opendatahub.io/dashboard: 'true'
-  - redhat-ods-applications:
-      labels:
-        app.kubernetes.io/instance: edge-anomaly-detection-hub
-        kubernetes.io/metadata.name: redhat-ods-applications
-        argocd.argoproj.io/managed-by: edge-anomaly-detection-hub
+  - redhat-ods-applications
     #  operatorgroupExcludes:
     #  - manuela-ml-workspace
 
@@ -39,6 +39,7 @@ clusterGroup:
     acm:
       name: advanced-cluster-management
       namespace: open-cluster-management
+      channel: release-2.11
 
     amqbroker-prod:
       name: amq-broker-rhel8
@@ -51,10 +52,13 @@ clusterGroup:
       - manuela-tst-all
 
     camelk-prod-dev:
-      name: red-hat-camel-k
+      name: camel-k
       namespaces:
       - manuela-data-lake
       - manuela-tst-all
+      channel: stable-v2
+      source: community-operators
+      sourceNamespace: openshift-marketplace
 
     pipelines:
       name: openshift-pipelines-operator-rh
@@ -63,10 +67,11 @@ clusterGroup:
     odf:
       name: odf-operator
       namespace: openshift-storage
+      source: redhat-operators
 
     ods:
       name: rhods-operator
-      channel: alpha
+      channel: fast
       namespace: redhat-ods-operator
 
   projects:
@@ -88,12 +93,6 @@ clusterGroup:
         kind: ManagedClusterInfo
         jsonPointers:
         - /spec/loggingCA
-
-          #odh:
-          #name: odh
-          #namespace: manuela-ml-workspace
-          #project: datacenter
-          #path: charts/datacenter/opendatahub
 
     pipelines:
       name: pipelines
@@ -119,16 +118,13 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     storage:
       name: storage
       namespace: openshift-storage
       project: datacenter
-      path: charts/datacenter/data-lake/odf
+      chart: openshift-data-foundations
+      chartVersion: 0.1.*
 
     data-science-cluster:
       name: data-science-cluster
@@ -148,10 +144,6 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     data-science-project:
       name: data-science-project
@@ -171,10 +163,6 @@ clusterGroup:
         kind: ImageStream
         jsonPointers:
         - /spec/tags
-      - group: apps.openshift.io
-        kind: DeploymentConfig
-        jsonPointers:
-        - /spec/template/spec/containers/0/image
 
     test:
       name: manuela-test
@@ -198,12 +186,6 @@ clusterGroup:
       chart: golang-external-secrets
       chartVersion: 0.1.*
 
-    secrets:
-      name: external-secrets
-      namespace: external-secrets
-      project: golang-external-secrets
-      path: charts/datacenter/external-secrets
-
 #  To have apps in multiple flavors, use namespaces and use helm overrides as appropriate
 #
 #  - name: pipelines
@@ -216,13 +198,6 @@ clusterGroup:
 #    - name: myparam
 #      value: myparam
 #
-#  - name: pipelines
-#    namespace: staging
-#    project: datacenter
-#    path: applications/pipeline
-#    repoURL: https://github.com/you/applications.git
-#    targetRevision: main
-#
 #   Additional applications
 #   Be sure to include additional resources your apps will require
 #   +X machines
@@ -234,6 +209,34 @@ clusterGroup:
 #    path: path/to/myapp
 #    repoURL: https://github.com/vendor/applications.git
 #    targetRevision: main
+
+  imperative:
+    # For additional overrides that apply to the jobs, please refer to
+    # https://github.com/validatedpatterns/clustergroup-chart/
+    # schedule: "*/10 * * * *" # Default schedule
+    jobs:
+      - name: clone-upstream-repos-gitea
+        playbook: ./ansible/playbooks/clone_upstream_repos_gitea.yml
+        extravars:
+          - "repo_name=manuela-dev"
+          - "upstream_repo_url=https://github.com/validatedpatterns-demos/manuela-dev"
+        timeout: 180
+      - name: copy-initial-model-to-incluster-s3
+        image: quay.io/hybridcloudpatterns/utility-container:latest
+        playbook: ./ansible/playbooks/copy_initial_object_to_incluster_s3.yml
+        extravars:
+          - "bucket_name=user-bucket"
+          - "src_file=ansible/files/model.joblib"
+          - "object_name=initial_model.joblib"
+        timeout: 180
+      - name: copy-initial-training-data-to-incluster-s3
+        image: quay.io/hybridcloudpatterns/utility-container:latest
+        playbook: ./ansible/playbooks/copy_initial_object_to_incluster_s3.yml
+        extravars:
+          - "bucket_name=user-bucket"
+          - "src_file=ansible/files/raw-data.csv"
+          - "object_name=raw-data.csv"
+        timeout: 180
 
   managedClusterGroups:
     factory:

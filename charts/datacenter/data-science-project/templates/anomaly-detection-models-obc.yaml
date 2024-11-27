@@ -13,5 +13,5 @@ spec:
   additionalConfig:
     bucketclass: noobaa-default-bucket-class
   generateBucketName: anomaly-detection
-  objectBucketName: obc-odh-applications-anomaly-detection
+  bucketName: anomaly-detection
   storageClassName: openshift-storage.noobaa.io

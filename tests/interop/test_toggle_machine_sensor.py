@@ -5,7 +5,7 @@ import subprocess
 import time
 
 import pytest
-from ocp_resources.configmap import ConfigMap
+from ocp_resources.config_map import ConfigMap
 from openshift.dynamic.exceptions import NotFoundError
 from validatedpatterns_tests.interop.edge_util import modify_file_content
 
@@ -16,6 +16,10 @@ logger = logging.getLogger(__loggername__)
 oc = os.environ["HOME"] + "/oc_client/oc"
 
 
+# FIXME(bandini): For now we skip this test, we need to rewrite it so that the change pushed in git
+# is done in the in-cluster gitea and not on the upstream repo. Otherwise the change will never be
+# propagated
+@pytest.mark.skip(reason="Need to push the changes to the in-cluster gitea")
 @pytest.mark.toggle_machine_sensor
 def test_toggle_machine_sensor(openshift_dyn_client):
     logger.info("Testing machine-sensor config change")
@@ -51,22 +55,44 @@ def test_toggle_machine_sensor(openshift_dyn_client):
 
     logger.info("Set 'SENSOR_TEMPERATURE_ENABLED' to 'true' and commit change")
 
-    machine_sensor_file = (
-        f"{patterns_repo}/charts/factory/manuela-stormshift/"
-        "templates/machine-sensor/machine-sensor-1-configmap.yaml"
-    )
+    if os.getenv("EXTERNAL_TEST") != "true":
+        machine_sensor_file = (
+            f"{patterns_repo}/charts/factory/manuela-stormshift/"
+            "templates/machine-sensor/machine-sensor-1-configmap.yaml"
+        )
+    else:
+        machine_sensor_file = (
+            "../../charts/factory/manuela-stormshift/"
+            "templates/machine-sensor/machine-sensor-1-configmap.yaml"
+        )
     logger.info(f"File Path : {machine_sensor_file}")
 
+    orig_content = 'SENSOR_TEMPERATURE_ENABLED: "false"'
+    new_content = 'SENSOR_TEMPERATURE_ENABLED: "true"'
+
     logger.info("Modify the file content")
-    modify_file_content(file_name=machine_sensor_file)
+    modify_file_content(
+        file_name=machine_sensor_file,
+        orig_content=orig_content,
+        new_content=new_content,
+    )
 
     logger.info("Merge the change")
-    subprocess.run(["git", "add", machine_sensor_file], cwd=f"{patterns_repo}")
-    subprocess.run(
-        ["git", "commit", "-m", "Toggling SENSOR_TEMPERATURE_ENABLED"],
-        cwd=f"{patterns_repo}",
-    )
-    subprocess.run(["git", "push"], cwd=f"{patterns_repo}")
+    if os.getenv("EXTERNAL_TEST") != "true":
+        subprocess.run(["git", "add", machine_sensor_file], cwd=patterns_repo)
+        subprocess.run(
+            ["git", "commit", "-m", "Toggling SENSOR_TEMPERATURE_ENABLED"],
+            cwd=patterns_repo,
+        )
+        push = subprocess.run(
+            ["git", "push"], cwd=patterns_repo, capture_output=True, text=True
+        )
+    else:
+        subprocess.run(["git", "add", machine_sensor_file])
+        subprocess.run(["git", "commit", "-m", "Toggling SENSOR_TEMPERATURE_ENABLED"])
+        push = subprocess.run(["git", "push"], capture_output=True, text=True)
+    logger.info(push.stdout)
+    logger.info(push.stderr)
 
     logger.info(
         "Verify that 'SENSOR_TEMPERATURE_ENABLED' is 'true' for"
@@ -107,7 +133,7 @@ def test_toggle_machine_sensor(openshift_dyn_client):
     time.sleep(30)
 
     logger.info("Checking machine-sensor-1 logs for temperature data")
-    app_string = "application=machine-sensor-1"
+    app_string = "app=machine-sensor-1"
     log_out = get_log_output(app_string, namespace="manuela-stormshift-machine-sensor")
     search_terms = ["Current", "Measure", "temperature"]
     if not search_log_output(log_out, search_terms):
